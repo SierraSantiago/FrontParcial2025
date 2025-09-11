@@ -18,7 +18,7 @@ export function LoginForm() {
   return (
     <form
       onSubmit={handleSubmit}
-      className="w-full max-w-md space-y-6 p-8 bg-white rounded-2xl shadow-lg border border-[--color-neutral]"
+      className="w-full max-w-md space-y-6 p-8 bg-white rounded-2xl shadow-lg border border-neutral"
     >
       <div className="space-y-2">
         <Label htmlFor="email">Email</Label>
@@ -28,7 +28,7 @@ export function LoginForm() {
           placeholder="andrei@example.com"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
-          className="border-[--color-accent]"
+          className="border-accent"
         />
       </div>
 
@@ -40,7 +40,7 @@ export function LoginForm() {
           placeholder="********"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
-          className="border-[--color-accent]"
+          className="border-accent"
         />
       </div>
 

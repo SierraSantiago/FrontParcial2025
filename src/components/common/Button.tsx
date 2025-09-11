@@ -14,10 +14,10 @@ export function Button({
 }: ButtonProps) {
   const baseStyles =
     variant === "primary"
-      ? "bg-[--color-primary] hover:bg-[--color-secondary] text-black"
+      ? "bg-primary hover:bg-secondary text-white hover:text-black"
       : variant === "secondary"
-      ? "bg-[--color-secondary] hover:bg-[--color-primary] text-black"
-      : "bg-[--color-accent] hover:bg-[--color-neutral] text-balck";
+      ? "bg-secondary hover:bg-primary text-black hover:text-white"
+      : "bg-accent hover:bg-neutral text-balck";
 
   return (
     <ShadButton
