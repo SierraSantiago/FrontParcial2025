@@ -1,22 +1,3 @@
-@import "tailwindcss";
-@plugin "tailwindcss-animate";
-
-
-@theme {
-  --color-primary: #00010D;    /* Azul fuerte */
-  --color-secondary: #A4A5A6; /* Azul claro */
-  --color-accent: #525759;    /* Gris azulado */
-  --color-neutral: #A69576;   /* Neutro */
-}
-
-/* Variante dark */
-@custom-variant dark (&:is(.dark *));
-.dark {
-  --color-primary: #2D8CA2;
-  --color-secondary: #5C9AA0;
-  --color-accent: #7A8C8E;
-  --color-neutral: #8D918B;
-}
-
-
-
+@tailwind base;
+@tailwind components;
+@tailwind utilities;

@@ -1,3 +1,4 @@
+"use client";
 import { Button as ShadButton } from "@/components/ui/button";
 import { cn } from "@/lib/utils"; // util para concatenar clases
 
