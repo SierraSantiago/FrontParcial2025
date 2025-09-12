@@ -1,19 +1,30 @@
 "use client";
 
 import { useState } from "react";
-import { useRouter } from "next/navigation";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/common/Button";
+import { useRouter } from "next/navigation";
+import { AppAlert } from "@/components/common/Alert";
 
-export function LoginForm() {
+export function RegisterForm() {
+  const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const [error, setError] = useState<string | null>(null);
   const router = useRouter();
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    console.log("Login attempt:", { email, password });
+
+    if (password !== confirmPassword) {
+      setError("Las contraseñas no coinciden.");
+      return;
+    }
+
+    setError(null); // limpiar error si está todo bien
+    console.log("Register attempt:", { name, email, password });
   };
 
   return (
@@ -21,6 +32,21 @@ export function LoginForm() {
       onSubmit={handleSubmit}
       className="w-full max-w-md space-y-6 p-8 bg-white rounded-2xl shadow-lg border border-neutral"
     >
+      {/* Mostrar alerta si hay error */}
+      {error && <AppAlert title="Error" description={error} />}
+
+      <div className="space-y-2">
+        <Label htmlFor="name">Nombre</Label>
+        <Input
+          id="name"
+          type="text"
+          placeholder="Andrei Ivanov"
+          value={name}
+          onChange={(e) => setName(e.target.value)}
+          className="border-accent"
+        />
+      </div>
+
       <div className="space-y-2">
         <Label htmlFor="email">Email</Label>
         <Input
@@ -45,17 +71,29 @@ export function LoginForm() {
         />
       </div>
 
+      <div className="space-y-2">
+        <Label htmlFor="confirmPassword">Confirmar Password</Label>
+        <Input
+          id="confirmPassword"
+          type="password"
+          placeholder="********"
+          value={confirmPassword}
+          onChange={(e) => setConfirmPassword(e.target.value)}
+          className="border-accent"
+        />
+      </div>
+
       <Button type="submit" variant="primary" className="w-full">
-        Iniciar sesión
+        Registrarse
       </Button>
 
       <p className="text-center text-sm text-accent">
-        ¿No tienes cuenta?{" "}
+        ¿Ya tienes cuenta?{" "}
         <span
-          onClick={() => router.push("/register")}
+          onClick={() => router.push("/login")}
           className="text-primary font-semibold cursor-pointer hover:underline"
         >
-          Regístrate
+          Inicia sesión
         </span>
       </p>
     </form>
