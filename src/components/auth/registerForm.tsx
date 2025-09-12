@@ -5,26 +5,50 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/common/Button";
 import { useRouter } from "next/navigation";
-import { AppAlert } from "@/components/common/Alert";
 
 export function RegisterForm() {
-  const [name, setName] = useState("");
+  const [fullName, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [error, setError] = useState<string | null>(null);
+  const [loading, setLoading] = useState(false);
   const router = useRouter();
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const mismatch = 
+    password.length > 0 &&
+    confirmPassword.length > 0 &&
+    password !== confirmPassword;
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    if (password !== confirmPassword) {
-      setError("Las contraseñas no coinciden.");
-      return;
-    }
+    if (!fullName.trim()) return setError("El nombre es obligatorio.");
+    if (!email.trim()) return setError("El email es obligatorio.");
+    if (password.length < 6) return setError("La contraseña debe tener al menos 6 caracteres.");
+    if (mismatch) return setError("Las contraseñas no coinciden.");
 
-    setError(null); // limpiar error si está todo bien
-    console.log("Register attempt:", { name, email, password });
+    setLoading(true);
+    setError(null);
+
+    try {
+      const response = await fetch("/api/auth/register", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ fullName, email, password }),
+      });
+
+      if (!response.ok) throw new Error((await response.json()).message || 'Registration failed');
+
+      router.push("/daemon");
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    } catch (error: any) {
+      setError(error.message || 'An unexpected error occurred');
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -32,16 +56,15 @@ export function RegisterForm() {
       onSubmit={handleSubmit}
       className="w-full max-w-md space-y-6 p-8 bg-white rounded-2xl shadow-lg border border-neutral"
     >
-      {/* Mostrar alerta si hay error */}
-      {error && <AppAlert title="Error" description={error} />}
+      
 
       <div className="space-y-2">
-        <Label htmlFor="name">Nombre</Label>
+        <Label htmlFor="fullName">Nombre</Label>
         <Input
-          id="name"
+          id="fullName"
           type="text"
           placeholder="Andrei Ivanov"
-          value={name}
+          value={fullName}
           onChange={(e) => setName(e.target.value)}
           className="border-accent"
         />
@@ -84,7 +107,7 @@ export function RegisterForm() {
       </div>
 
       <Button type="submit" variant="primary" className="w-full">
-        Registrarse
+        {loading ? "Creando cuenta..." : "Registrarse"}
       </Button>
 
       <p className="text-center text-sm text-accent">
