@@ -20,17 +20,16 @@ interface AppSidebarProps {
 
 const menuItems = {
   admin: [
-    { title: "Dashboard", url: "/admin", icon: LayoutDashboard },
-    { title: "Usuarios", url: "/admin/users", icon: Users },
-    { title: "Configuración", url: "/admin/settings", icon: Settings },
+    { title: "Admin Dashboard", url: "/admin", icon: LayoutDashboard },
+    { title: "Daemon Dashboard", url: "/daemon", icon:  Activity},
+    { title: "Resistance Hub", url: "/resistance", icon: Shield },
   ],
   daemon: [
-    { title: "Dashboard", url: "/daemon", icon: LayoutDashboard },
-    { title: "Monitoreo", url: "/daemon/monitoring", icon: Activity },
+    { title: "Daemon Dashboard", url: "/daemon", icon: LayoutDashboard },
+    { title: "Resistance Hub", url: "/resistance", icon: Shield },
   ],
   "network-admin": [
     { title: "Resistance Hub", url: "/resistance", icon: Shield },
-    { title: "Usuarios", url: "/resistance/users", icon: Users },
   ],
 }
 
