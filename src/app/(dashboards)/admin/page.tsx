@@ -34,6 +34,7 @@ export default function AdminPage() {
   const [loading, setLoading] = useState(true);
 
   const userRole = "andrei";
+  
 
   // --- Cargar usuarios y víctimas ---
   useEffect(() => {

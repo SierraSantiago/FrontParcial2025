@@ -7,7 +7,7 @@ export default async function DaemonLayout({ children}: { children: React.ReactN
     if (!me) redirect('/login');
 
     const allowed = me.roles.includes('daemons') || me.roles.includes('andrei');
-    if (!allowed) redirect('/');
+    if (!allowed) redirect('/resistance');
 
     return <>{children}</>;
 }
