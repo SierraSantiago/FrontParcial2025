@@ -20,8 +20,8 @@ export default async function Layout({ children }: { children: React.ReactNode }
 
   console.log("Roles completos:", me.roles);
 
-  const allowed = ["andrei"].includes(activeRole);
-  if (!allowed) redirect("/resistance");
+  const allowed = me.roles.includes('andrei');
+  if (!allowed) redirect('/resistance');
 
   return (
     <SidebarProvider>

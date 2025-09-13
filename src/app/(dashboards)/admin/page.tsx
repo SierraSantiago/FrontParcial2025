@@ -37,6 +37,7 @@ export default function AdminPage() {
 
   // --- Cargar usuarios y víctimas ---
   useEffect(() => {
+
     Promise.all([fetch("/api/auth/users"), fetch("/api/victims")])
       .then(async ([resUsers, resVictims]) => {
         const usersData = await resUsers.json();
