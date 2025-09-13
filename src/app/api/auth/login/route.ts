@@ -8,18 +8,22 @@ export async function POST(req: Request) {
             'Content-Type': 'application/json',
         },
         body: JSON.stringify(body),
+        cache: 'no-store'
     });
 
     if (!res.ok) return new NextResponse(await res.text(), { status: res.status });
     const data = await res.json();
 
     const response = NextResponse.json({ ok: true });
-    response.cookies.set('session', data.token, {
+    response.cookies.set({
+        name: 'access_token',
+        value: data.token,
         httpOnly: true,
         secure: process.env.NODE_ENV === 'production',
         path: '/',
         maxAge: 60 * 60 * 24 * 7, // 1 week
         sameSite: 'lax'
     });
+    console.log(data.token);
     return response;
 }

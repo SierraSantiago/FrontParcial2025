@@ -24,11 +24,19 @@ type ReportItem = {
 };
 
 async function apiGet<T>(path: string, token: string): Promise<T> {
+  console.log(`[apiGet] GET ${path} bearer=${token.slice(0, 12)}...`);
   const r = await fetch(`${process.env.BACKEND_URL}${path}`, {
     headers: { Authorization: `Bearer ${token}` },
     cache: "no-store",
   });
-  if (!r.ok) throw new Error(await r.text());
+  if (!r.ok) {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    let detail: any = await r.text();
+    try { detail = JSON.parse(detail); } catch {}
+    const msg = `[${r.status}] ${path} -> ${typeof detail === 'string' ? detail : detail?.message ?? 'Unknown error'}`;
+    console.error(msg, { detail });
+    throw new Error(msg);
+  }
   return r.json();
 }
 
@@ -36,7 +44,7 @@ export default async function DaemonPage() {
   const me = await getMe();
   if (!me) return null;
 
-  const token = (await cookies()).get('session')?.value;
+  const token = (await cookies()).get('access_token')?.value;
   if (!token) throw new Error("Authentication token is missing");
 
   const [disciplines, reports] = await Promise.all([

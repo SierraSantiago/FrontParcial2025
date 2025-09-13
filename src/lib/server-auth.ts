@@ -10,7 +10,7 @@ export type Me = {
 };
 
 export async function getMe(): Promise<Me | null> {
-    const token = (await cookies()).get('session')?.value;
+    const token = (await cookies()).get('access_token')?.value;
     if (!token) return null;
 
     const res = await fetch(`${process.env.BACKEND_URL}/auth/check-status`, {
