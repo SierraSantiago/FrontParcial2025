@@ -1,7 +1,8 @@
-"use client"
+"use client";
 
-import Link from "next/link"
-import { LayoutDashboard, Activity, Shield } from "lucide-react"
+import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { LayoutDashboard, Activity, Shield, LogOut } from "lucide-react";
 
 import {
   Sidebar,
@@ -12,38 +13,45 @@ import {
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
-} from "@/components/ui/sidebar"
+  SidebarFooter,
+} from "@/components/ui/sidebar";
 
 interface AppSidebarProps {
-  role: "Andrei" | "daemon" | "network-admin"
+  role: "andrei" | "daemons" | "network-admin";
 }
 
 const menuItems = {
-  Andrei: [
+  andrei: [
     { title: "Admin Dashboard", url: "/admin", icon: LayoutDashboard },
-    { title: "Daemon Dashboard", url: "/daemon", icon:  Activity},
+    { title: "Daemon Dashboard", url: "/daemon", icon: Activity },
     { title: "Resistance Hub", url: "/resistance", icon: Shield },
   ],
-  daemon: [
+  daemons: [
     { title: "Daemon Dashboard", url: "/daemon", icon: LayoutDashboard },
     { title: "Resistance Hub", url: "/resistance", icon: Shield },
   ],
   "network-admin": [
     { title: "Resistance Hub", url: "/resistance", icon: Shield },
   ],
-}
+};
 
 export function AppSidebar({ role }: AppSidebarProps) {
-  const items = menuItems[role]
+  const router = useRouter();
+  const items = menuItems[role];
+
+  const handleLogout = async () => {
+    await fetch("/api/auth/logout", { method: "POST" });
+    router.push("/login");
+  };
 
   return (
     <Sidebar>
       <SidebarContent className="bg-slate-300">
         <SidebarGroup>
           <SidebarGroupLabel className="text-primary font-bold">
-            {role === "Andrei"
+            {role === "andrei"
               ? "Admin Panel"
-              : role === "daemon"
+              : role === "daemons"
               ? "Daemon Panel"
               : "Resistance Network"}
           </SidebarGroupLabel>
@@ -52,8 +60,8 @@ export function AppSidebar({ role }: AppSidebarProps) {
               {items.map((item) => (
                 <SidebarMenuItem key={item.title}>
                   <SidebarMenuButton asChild>
-                    <Link href={item.url} className="flex items-center gap-2 ">
-                      <item.icon className="h-5 w-5 text-accent]" />
+                    <Link href={item.url} className="flex items-center gap-2">
+                      <item.icon className="h-5 w-5 text-accent" />
                       <span>{item.title}</span>
                     </Link>
                   </SidebarMenuButton>
@@ -63,6 +71,16 @@ export function AppSidebar({ role }: AppSidebarProps) {
           </SidebarGroupContent>
         </SidebarGroup>
       </SidebarContent>
+
+      <SidebarFooter className="bg-slate-300">
+        <button
+          onClick={handleLogout}
+          className="flex items-center gap-2 text-red-600 hover:text-red-800 bg-slate-300"
+        >
+          <LogOut className="h-5 w-5" />
+          <span>Logout</span>
+        </button>
+      </SidebarFooter>
     </Sidebar>
-  )
+  );
 }

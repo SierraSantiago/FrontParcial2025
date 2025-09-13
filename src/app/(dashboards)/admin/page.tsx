@@ -17,11 +17,12 @@ export default function AdminPage() {
   const router = useRouter();
   const [users, setUsers] = useState<User[]>([]);
   const [loading, setLoading] = useState(true);
+  
 
-  const userRole = "Andrei"; 
+  const userRole = "andrei"; 
 
   useEffect(() => {
-    if (userRole !== "Andrei") {
+    if (userRole !== "andrei") {
       router.push("/login");
     } else {
       fetch("/api/auth/users")
