@@ -1,7 +1,7 @@
 "use client"
 
 import Link from "next/link"
-import { LayoutDashboard, Users, Settings, Activity, Shield } from "lucide-react"
+import { LayoutDashboard, Activity, Shield } from "lucide-react"
 
 import {
   Sidebar,
@@ -15,11 +15,11 @@ import {
 } from "@/components/ui/sidebar"
 
 interface AppSidebarProps {
-  role: "admin" | "daemon" | "network-admin"
+  role: "Andrei" | "daemon" | "network-admin"
 }
 
 const menuItems = {
-  admin: [
+  Andrei: [
     { title: "Admin Dashboard", url: "/admin", icon: LayoutDashboard },
     { title: "Daemon Dashboard", url: "/daemon", icon:  Activity},
     { title: "Resistance Hub", url: "/resistance", icon: Shield },
@@ -41,7 +41,7 @@ export function AppSidebar({ role }: AppSidebarProps) {
       <SidebarContent className="bg-slate-300">
         <SidebarGroup>
           <SidebarGroupLabel className="text-primary font-bold">
-            {role === "admin"
+            {role === "Andrei"
               ? "Admin Panel"
               : role === "daemon"
               ? "Daemon Panel"
