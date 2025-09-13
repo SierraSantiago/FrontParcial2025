@@ -17,7 +17,7 @@ import {
 } from "@/components/ui/sidebar";
 
 interface AppSidebarProps {
-  role: "andrei" | "daemons" | "network-admin";
+  role: "andrei" | "daemons" | "network-admins";
 }
 
 const menuItems = {
@@ -30,7 +30,7 @@ const menuItems = {
     { title: "Daemon Dashboard", url: "/daemon", icon: LayoutDashboard },
     { title: "Resistance Hub", url: "/resistance", icon: Shield },
   ],
-  "network-admin": [
+  "network-admins": [
     { title: "Resistance Hub", url: "/resistance", icon: Shield },
   ],
 };

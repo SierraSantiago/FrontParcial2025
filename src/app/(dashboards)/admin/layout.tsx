@@ -3,7 +3,7 @@ import { redirect } from "next/navigation";
 import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 import { AppSidebar } from "@/components/layout/AppSidebar";
 
-type Role = "daemons" | "andrei" | "network-admin";
+type Role = "daemons" | "andrei" | "network-admins";
 
 export default async function Layout({ children }: { children: React.ReactNode }) {
   const me = await getMe();
@@ -15,11 +15,10 @@ export default async function Layout({ children }: { children: React.ReactNode }
   } else if (me.roles.includes("daemons")) {
     activeRole = "daemons";
   } else {
-    activeRole = "network-admin";
+    activeRole = "network-admins";
   }
 
   console.log("Roles completos:", me.roles);
-  console.log("Rol activo:", activeRole);
 
   const allowed = ["daemons", "andrei"].includes(activeRole);
   if (!allowed) redirect("/resistance");
