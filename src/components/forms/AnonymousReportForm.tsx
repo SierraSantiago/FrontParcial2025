@@ -10,7 +10,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/common/Button";
 
-const StatusEnum = z.enum(["INCIDENT", "RESISTANCE", "INTEL"]).optional();
+const StatusEnum = z.enum(["incident", "resistance", "intel"]).optional();
 
 const schema = z.object({
   content: z.string().min(6, "Por favor describe con más detalle."),
@@ -30,7 +30,7 @@ export default function AnonymousReportForm() {
     resolver: zodResolver(schema),
     defaultValues: {
       content: "",
-      status: "RESISTANCE",
+      status: "resistance",
       attachmentsCsv: "",
       victimId: "",
       consent: false,
@@ -54,7 +54,7 @@ export default function AnonymousReportForm() {
       victimId: values.victimId || undefined,
     };
 
-    const r = await fetch("api/report/public", {
+    const r = await fetch("/api/reports/public", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(payload),
@@ -67,7 +67,7 @@ export default function AnonymousReportForm() {
       return;
     }
 
-    form.reset({ content: "", status: "RESISTANCE", attachmentsCsv: "", victimId: "", consent: false });
+    form.reset({ content: "", status: "resistance", attachmentsCsv: "", victimId: "", consent: false });
     setOk(true);
   }
 
@@ -102,9 +102,9 @@ export default function AnonymousReportForm() {
                     value={field.value ?? ""}
                     onChange={(e) => field.onChange(e.target.value || undefined)}
                   >
-                    <option value="RESISTANCE">RESISTANCE</option>
-                    <option value="INCIDENT">INCIDENT</option>
-                    <option value="INTEL">INTEL</option>
+                    <option value="resistance">RESISTANCE</option>
+                    <option value="incident">INCIDENT</option>
+                    <option value="intel">INTEL</option>
                   </select>
                 </FormControl>
                 <FormMessage />
