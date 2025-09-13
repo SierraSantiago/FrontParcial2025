@@ -20,7 +20,7 @@ export default async function Layout({ children }: { children: React.ReactNode }
 
   console.log("Roles completos:", me.roles);
 
-  const allowed = ["daemons", "andrei"].includes(activeRole);
+  const allowed = ["andrei"].includes(activeRole);
   if (!allowed) redirect("/resistance");
 
   return (
