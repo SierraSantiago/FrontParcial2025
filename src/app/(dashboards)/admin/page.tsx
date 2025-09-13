@@ -18,7 +18,7 @@ export default function AdminPage() {
   const [users, setUsers] = useState<User[]>([]);
   const [loading, setLoading] = useState(true);
 
-  const userRole = "Andrei"; // ⚠️ Cambiar cuando tengas login real
+  const userRole = "Andrei"; 
 
   useEffect(() => {
     if (userRole !== "Andrei") {
@@ -38,6 +38,9 @@ export default function AdminPage() {
   }, [userRole, router]);
 
   const handleUpdate = async (id: string, updatedUser: Partial<User>) => {
+    // Debug temporal
+    console.log('Datos a enviar:', JSON.stringify(updatedUser, null, 2));
+    
     const res = await fetch(`/api/auth/users/${id}`, {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
@@ -50,7 +53,8 @@ export default function AdminPage() {
         prev.map((u) => (u.id === id ? { ...u, ...newUser } : u))
       );
     } else {
-      console.error("Error al actualizar usuario");
+      const error = await res.text();
+      console.error("Error al actualizar usuario:", error);
     }
   };
 
@@ -111,7 +115,7 @@ export default function AdminPage() {
                         setUsers((prev) =>
                           prev.map((usr) =>
                             usr.id === u.id
-                              ? { ...usr, roles: e.target.value.split(",") }
+                              ? { ...usr, roles: e.target.value.split(", ") }
                               : usr
                           )
                         )
@@ -163,7 +167,10 @@ export default function AdminPage() {
               </tbody>
             </table>
             <Button
-              onClick={() => handleUpdate(u.id, u)}
+              onClick={() => {
+                const { id, ...userWithoutId } = u;
+                handleUpdate(u.id, userWithoutId);
+              }}
               className="bg-primary text-white hover:bg-secondary"
             >
               Guardar
