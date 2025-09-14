@@ -1,14 +1,17 @@
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 import { cookies } from "next/headers";
 
-type Params = { params: { id: string } };
+type IdParams = { id: string };
 
-export async function GET(_req: Request, { params }: Params) {
+export async function GET(_req: NextRequest, { params }: { params: IdParams | Promise<IdParams> }) {
+
+  const { id } = await Promise.resolve(params);
+
   const token = (await cookies()).get("session")?.value;
   if (!token) return new NextResponse("Unauthorized", { status: 401 });
 
   const r = await fetch(
-    `${process.env.BACKEND_URL}/discipline/daemon/${params.id}`,
+    `${process.env.BACKEND_URL}/discipline/daemon/${id}`,
     { headers: { Authorization: `Bearer ${token}` }, cache: "no-store" }
   );
 
