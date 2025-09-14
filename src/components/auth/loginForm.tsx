@@ -12,6 +12,7 @@ export function LoginForm() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const router = useRouter();
+  
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -19,6 +20,7 @@ export function LoginForm() {
     setError(null);
 
     try {
+      
       const response = await fetch("/api/auth/login", {
         method: "POST",
         headers: {
@@ -29,7 +31,15 @@ export function LoginForm() {
 
       if (!response.ok) throw new Error((await response.json()).message || 'Login failed');
 
-      router.push("/daemon");
+      const data = await response.json();
+      console.log("login data =>", data);
+
+      const meRes = await fetch("/api/auth/me", { cache: "no-store" });
+      const me = await meRes.json();
+      console.log("me =>", me); 
+
+
+      router.push("/resistance");
       console.log(await response.json());
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (error: any) {
