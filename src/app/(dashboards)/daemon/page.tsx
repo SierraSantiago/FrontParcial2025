@@ -7,28 +7,21 @@ import { Badge } from "@/components/ui/badge";
 import DisciplineTable from "@/components/tables/DisciplineTable";
 import ReportsTable from "@/components/tables/ReportsTable";
 import NewReportForm from "@/components/forms/NewReportForm";
+import { redirect } from "next/navigation";
 
-type DisciplineItem = {
-  id: string;
-  points: number;
-  reason: string;
-  createdAt: string;
-  issuedByUser?: { id: string; fullName: string };
-};
-
-type ReportItem = {
-  id: string;
-  title: string;
-  status: "submitted" | "reviewed" | "rejected";
-  createdAt: string;
-};
+type DisciplineItem = { id: string; points: number; reason: string; createdAt: string; issuedByUser?: { id: string; fullName: string } };
+type ReportItem = { id: string; title: string; status: "submitted" | "reviewed" | "rejected"; createdAt: string };
 
 async function apiGet<T>(path: string, token: string): Promise<T> {
-  console.log(`[apiGet] GET ${path} bearer=${token.slice(0, 12)}...`);
   const r = await fetch(`${process.env.BACKEND_URL}${path}`, {
     headers: { Authorization: `Bearer ${token}` },
     cache: "no-store",
   });
+
+  if (r.status === 403) {
+    redirect("/resistance");
+  }
+
   if (!r.ok) {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     let detail: any = await r.text();
@@ -37,15 +30,16 @@ async function apiGet<T>(path: string, token: string): Promise<T> {
     console.error(msg, { detail });
     throw new Error(msg);
   }
+
   return r.json();
 }
 
 export default async function DaemonPage() {
   const me = await getMe();
-  if (!me) return null;
+  if (!me) redirect("/login"); // si no hay sesión, al login
 
   const token = (await cookies()).get('access_token')?.value;
-  if (!token) throw new Error("Authentication token is missing");
+  if (!token) redirect("/login");
 
   const [disciplines, reports] = await Promise.all([
     apiGet<DisciplineItem[]>(`/disciplines/daemon/${me.id}`, token),
