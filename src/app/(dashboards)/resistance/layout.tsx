@@ -5,7 +5,7 @@ import { AppSidebar } from "@/components/layout/AppSidebar";
 
 type Role = "daemons" | "andrei" | "network-admins";
 
-export default async function DaemonLayout({ children }: { children: React.ReactNode }) {
+export default async function ResistanceLayout({ children }: { children: React.ReactNode }) {
   const me = await getMe();
   if (!me) redirect("/login");
 
@@ -17,11 +17,6 @@ export default async function DaemonLayout({ children }: { children: React.React
   } else {
     activeRole = "network-admins";
   }
-
-  console.log("Roles completos:", me.roles);
-
-  const allowed = me.roles.includes("daemons") || me.roles.includes("andrei");
-  if (!allowed) redirect("/resistance");
 
   return (
     <SidebarProvider>

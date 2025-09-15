@@ -13,9 +13,18 @@ const tips = [
 ];
 
 const memes = [
-  "https://i.imgflip.com/30b1gx.jpg",
-  "https://i.imgflip.com/1otk96.jpg",
-  "https://i.imgflip.com/26am.jpg",
+  {
+    src: "https://i.imgflip.com/30b1gx.jpg",
+    alt: "Distracted boyfriend meme",
+  },
+  {
+    src: "https://i.imgflip.com/1otk96.jpg",
+    alt: "Change my mind meme",
+  },
+  {
+    src: "https://i.imgflip.com/26am.jpg",
+    alt: "Drake Hotline Bling meme",
+  },
 ];
 
 export default function ResistancePage() {
@@ -24,17 +33,22 @@ export default function ResistancePage() {
       <section className="grid gap-3">
         <h1 className="text-3xl font-bold">Public Resistance</h1>
         <p className="text-muted-foreground">
-          Consejos de supervivencia, memes y un canal anónimo para reportar actividad sospechosa.
+          Consejos de supervivencia, memes y un canal anónimo para reportar
+          actividad sospechosa.
         </p>
         <div className="text-sm">
           ¿Eres daemon?{" "}
-          <Link className="underline" href="/daemon">Ir a tu dashboard</Link>
+          <Link className="underline" href="/daemon">
+            Ir a tu dashboard
+          </Link>
         </div>
       </section>
 
       <section className="grid grid-cols-1 md:grid-cols-2 gap-6">
         <Card>
-          <CardHeader><CardTitle>Tips rápidos</CardTitle></CardHeader>
+          <CardHeader>
+            <CardTitle>Tips rápidos</CardTitle>
+          </CardHeader>
           <CardContent className="grid gap-3">
             {tips.map((t, i) => (
               <div key={i} className="flex items-start gap-3">
@@ -46,10 +60,22 @@ export default function ResistancePage() {
         </Card>
 
         <Card>
-          <CardHeader><CardTitle>Memes</CardTitle></CardHeader>
-           <CardContent className="grid grid-cols-2 gap-3">
-            {memes.map((src, i) => (
-              <Image key={i} src={src} alt={`meme-${i}`} width={320} height={160} className="rounded-lg border object-cover w-full h-40" />
+          <CardHeader>
+            <CardTitle>Memes</CardTitle>
+          </CardHeader>
+          <CardContent className="grid grid-cols-2 gap-3">
+            {memes.map((meme, i) => (
+              <div key={i} className="relative w-full h-40">
+                <Image
+                  src={meme.src}
+                  alt={meme.alt}
+                  fill
+                  className="rounded-lg border object-cover"
+                  sizes="(max-width: 768px) 100vw,
+                         (max-width: 1200px) 50vw,
+                         33vw"
+                />
+              </div>
             ))}
           </CardContent>
         </Card>
@@ -57,7 +83,9 @@ export default function ResistancePage() {
 
       <section>
         <Card>
-          <CardHeader><CardTitle>Enviar reporte anónimo</CardTitle></CardHeader>
+          <CardHeader>
+            <CardTitle>Enviar reporte anónimo</CardTitle>
+          </CardHeader>
           <CardContent>
             <AnonymousReportForm />
           </CardContent>
