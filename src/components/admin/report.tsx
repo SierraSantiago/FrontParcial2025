@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button";
 export interface Report {
   id: string;
   content: string;
-  status: "resistance" | "intel" | "incident"; // ✅ valores exactos del backend
+  status: "resistance" | "intel" | "incident";
   anonymous: boolean;
   attachments: string[];
   reportUser?: { id: string; fullName: string; email: string } | null;
@@ -18,9 +18,10 @@ export interface Report {
 interface ReportProps {
   report: Report;
   onUpdate: (id: string, updatedReport: Partial<Report>) => void;
+  onDelete: (id: string) => void;
 }
 
-export default function ReportCard({ report, onUpdate }: ReportProps) {
+export default function ReportCard({ report, onUpdate, onDelete }: ReportProps) {
   const [localReport, setLocalReport] = useState<Report>(report);
 
   const handleChange = (field: keyof Report, value: unknown) => {
@@ -98,20 +99,29 @@ export default function ReportCard({ report, onUpdate }: ReportProps) {
         </tbody>
       </table>
 
-      <Button
-        onClick={() => {
-          const cleanReport = {
-            content: localReport.content,
-            status: localReport.status,
-            anonymous: localReport.anonymous,
-            attachments: localReport.attachments,
-          };
-          onUpdate(localReport.id, cleanReport);
-        }}
-        className="bg-primary text-white hover:bg-secondary"
-      >
-        Guardar
-      </Button>
+      <div className="flex gap-2">
+        <Button
+          onClick={() => {
+            const cleanReport = {
+              content: localReport.content,
+              status: localReport.status,
+              anonymous: localReport.anonymous,
+              attachments: localReport.attachments,
+            };
+            onUpdate(localReport.id, cleanReport);
+          }}
+          className="bg-primary text-white hover:bg-secondary"
+        >
+          Guardar
+        </Button>
+
+        <Button
+          onClick={() => onDelete(localReport.id)}
+          className="bg-red-600 text-white hover:bg-red-700"
+        >
+          Eliminar
+        </Button>
+      </div>
     </div>
   );
 }

@@ -88,6 +88,18 @@ export default function AdminPage() {
     }
   };
 
+  const handleDeleteReport = async (id: string) => {
+    const res = await fetch(`/api/reports/${id}`, {
+      method: "DELETE",
+    });
+
+    if (res.ok) {
+      setReports((prev) => prev.filter((r) => r.id !== id));
+    } else {
+      console.error("Error al eliminar el reporte", await res.text());
+    }
+  };
+
   if (loading) return <p className="p-8">Cargando datos...</p>;
 
   return (
@@ -123,7 +135,12 @@ export default function AdminPage() {
         <h2 className="text-2xl font-semibold mb-4">Reportes</h2>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {reports.map((r) => (
-            <ReportCard key={r.id} report={r} onUpdate={handleUpdateReport} />
+            <ReportCard
+              key={r.id}
+              report={r}
+              onUpdate={handleUpdateReport}
+              onDelete={handleDeleteReport}
+            />
           ))}
         </div>
       </section>
