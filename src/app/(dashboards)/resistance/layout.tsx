@@ -2,21 +2,13 @@ import { getMe } from "@/lib/server-auth";
 import { redirect } from "next/navigation";
 import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 import { AppSidebar } from "@/components/layout/AppSidebar";
-
-type Role = "daemons" | "andrei" | "network-admins";
+import { getActiveRole, Role } from "@/lib/roles";
 
 export default async function ResistanceLayout({ children }: { children: React.ReactNode }) {
   const me = await getMe();
   if (!me) redirect("/login");
 
-  let activeRole: Role;
-  if (me.roles.includes("andrei")) {
-    activeRole = "andrei";
-  } else if (me.roles.includes("daemons")) {
-    activeRole = "daemons";
-  } else {
-    activeRole = "network-admins";
-  }
+  const activeRole: Role = getActiveRole(me.roles);
 
   return (
     <SidebarProvider>
